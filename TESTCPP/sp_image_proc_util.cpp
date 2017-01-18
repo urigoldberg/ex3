@@ -249,7 +249,7 @@ int* spBestSIFTL2SquaredDistance(int kClosest, SPPoint* queryFeature,
 	}
 	/**
 	 * ================VERY IMPORTANT================
-	 * FOR TIE BREAK - CHANGE QUEUE FOR CASES OF EVAN
+	 * FOR TIE BREAK - CHANGE QUEUE FOR CASES OF EVEN
 	 * 				(In Enqueue)
 	 * ==============================================
 	 */

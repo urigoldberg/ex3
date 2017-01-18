@@ -97,10 +97,31 @@ int main() {
 				return 0;
 			}
 
+		//Print 5 closest
+		int test = print_5_GlobalFeatures(RBG_query, RGB_DB, HowManypic);
 
+		//if test == -1, something went wrong...free all and run
+		if (test == -1){
+			terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,false);
+			FreeOneArrayOfPoints(RBG_query);
+			FreeOneArrayOfPoints(SIFTS_Query);
+			return 0;
+		}
 
+		//Print 5 closest
+		int test1 = print_5_LocalFeatures( SIFTS_Query, SIFTS_DB,NumOfSiftExtracted, howManySiftsQuery,
+				 HowManypic);
+
+		//if test == -1, something went wrong...free all and run
+		if (test1 == -1){
+			terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,false);
+			FreeOneArrayOfPoints(RBG_query);
+			FreeOneArrayOfPoints(SIFTS_Query);
+			return 0;
+			}
 
 	}
+	terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,true);
 	return 0;
 
 }
