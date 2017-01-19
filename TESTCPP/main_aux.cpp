@@ -194,22 +194,12 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 	 *  MIGHT CONTAING A LOGIC PROBLEM. WILL BE CHECKED LATER
 	 *
 	 *  fill Queue with picture index as index, nubmer of sifts as value.
-	 *
-	 *  In case two images have same score with respect to the query image,
-	 *  use the indices as a tie-breaker
-	 *  (the lower index image should be printed first).
-	 *
-	 *  because of that reason all indexes are * (-1) because we are going to select them from the
-	 *  bottom of queue, so in case of equal score we want the higher index to become a lower.
-	 *  for example - if we have  x = (index = 2, value = 5) and y =  (index = 3, value = 5) we want
-	 *  to print x before y. in queue 2 will be before 3, but we print bottom -> top so
-	 *  we want 3 before 2. after the multiplication with -1 we have -3 < -2 so 2 will be after 3.
-	 *
-	 *  before printing we will do it again
+	 *  because we would like to get images with max num of sifts the values will be entered
+	 *  after multiplication with (-1) and in that we max bacome min
 	 */
 
 	for (int i = 0; i < HowManypic; i++) {
-		spBPQueueEnqueue(arrayOfAllQueue, (-1)*i, (double)arrayOfAll[i]*(-1));
+		spBPQueueEnqueue(arrayOfAllQueue, i, (double)arrayOfAll[i]*(-1));
 		}
 
 	//Allocate BPQueueElement for peeking from queue
@@ -232,7 +222,7 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 		spBPQueuePeek(arrayOfAllQueue, ElemForEnqueue);
 		spBPQueueDequeue(arrayOfAllQueue);
 
-		printf("%d", (ElemForEnqueue->index)*(-1));
+		printf("%d", (ElemForEnqueue->index));
 	}
 	printf("\n");
 
