@@ -30,11 +30,13 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 
 	RGB_DB = (SPPoint***) malloc(sizeof(SPPoint**) * HowManypic);
 	if (RGB_DB == NULL) {
+		printf(MEM_PROBLEMS);
 		return;
 	}
 
 	SIFTS_DB = (SPPoint***) malloc(sizeof(SPPoint**) * HowManypic);
 	if (SIFTS_DB == NULL) {
+		printf(MEM_PROBLEMS);
 		free(RGB_DB);
 		return;
 	}
@@ -42,6 +44,7 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 	//initialize array of ints for number of sifts extracted from each image
 	NumOfSiftExtracted = (int*) malloc(sizeof(int) * HowManypic);
 	if (NumOfSiftExtracted == NULL) {
+		printf(MEM_PROBLEMS);
 		free(SIFTS_DB);
 		free(RGB_DB);
 		return;
@@ -97,9 +100,10 @@ int print_5_GlobalFeatures(SPPoint** RBG_HIST, SPPoint*** RGB_DB,
 		int HowManypic) {
 
 	//Allocate Priority Queue
-	SPBPQueue* Closeset5 = spBPQueueCreate(5);
+	SPBPQueue* Closeset5 = spBPQueueCreate(HOWMANYCLOSE);
 	//Allocation failed
 	if (Closeset5 == NULL) {
+		printf(MEM_PROBLEMS);
 		return -1;
 	}
 
@@ -114,13 +118,14 @@ int print_5_GlobalFeatures(SPPoint** RBG_HIST, SPPoint*** RGB_DB,
 
 	//Allocation failed
 	if (ElemForEnqueue == NULL) {
+		printf(MEM_PROBLEMS);
 		spBPQueueDestroy(Closeset5);
 		return -1;
 	}
 
 	//print 5 closest
 	printf(PRINT_BY_GLOBAL);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < HOWMANYCLOSE; i++) {
 		if (spBPQueueIsEmpty(Closeset5)) {
 			spBPQueueDestroy(Closeset5);
 			free(ElemForEnqueue);
@@ -146,16 +151,17 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 
 	//create array for all pictures
 	int* arrayOfAll = (int*)malloc(sizeof(int)*HowManypic);
-	if (arrayOfAll == NULL)
+	if (arrayOfAll == NULL){
+		printf(MEM_PROBLEMS);
 		return -1;
-
+	}
 	//insert zero for each cell in the array
 	for (int i = 0; i < HowManypic; i++)
 		arrayOfAll[i] = 0;
 
 	//Checks each sppoint in siftquery array
 	for (int i = 0; i < howManySiftsQuery; i++){
-		int* tempArrayForSift = spBestSIFTL2SquaredDistance(5, SIFTS_Query[i] ,
+		int* tempArrayForSift = spBestSIFTL2SquaredDistance(HOWMANYCLOSE, SIFTS_Query[i] ,
 				SIFTS_DB, HowManypic,
 				NumOfSiftExtracted);
 
@@ -166,7 +172,7 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 		}
 
 		//increment value of pic with close sift
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < HOWMANYCLOSE; j++)
 			arrayOfAll[tempArrayForSift[j]]++;
 
 		//free tempArrayForSift before next iteration
@@ -176,7 +182,7 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 	//print 5 closest
 	qsort(arrayOfAll,HowManypic,sizeof(int),cmp);
 	printf(PRINT_BY_LOCAL);
-	for (int i = 0; i < min(5,HowManypic); i++){
+	for (int i = 0; i < min(HOWMANYCLOSE,HowManypic); i++){
 		if (i > 0)
 			printf(",");
 		printf("%d",arrayOfAll[i]);

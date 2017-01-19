@@ -27,9 +27,11 @@ extern "C" {
 #define IMAGE_NUM_ERROR "An error occurred - invalid number of images\n"
 #define NUM_BIN_ERROR "An error occurred - invalid number of bins\n"
 #define NUM_SIFT_ERROR "An error occurred - invalid number of features\n"
+#define MEM_PROBLEMS "An error occurred - allocation failure\n"
 
 //DEFINE NUMBERS
 #define STRLENGTH 1024
+#define HOWMANYCLOSE 5
 
 //FUNCTIONS
 /**
