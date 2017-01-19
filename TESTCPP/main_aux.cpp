@@ -179,18 +179,51 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 		free(tempArrayForSift);
 	}
 
+	//After create array that contain for each index i how many times picture with index i was in top 5 sifts
+	//create Priority for printing the 5 indexes with higher values
+
+	//Allocate Priority Queue
+		SPBPQueue* arrayOfAllQueue = spBPQueueCreate(HowManypic);
+		//Allocation failed
+		if (arrayOfAllQueue == NULL) {
+			printf(MEM_PROBLEMS);
+			free(arrayOfAll);
+			return -1;
+		}
+
+	//fill Queue with picture index as index, nubmer of sifts as value
+	for (int i = 0; i < HowManypic; i++) {
+		spBPQueueEnqueue(arrayOfAllQueue, i, (double)arrayOfAll[i]);
+		}
+
+	//Allocate BPQueueElement for peeking from queue
+		BPQueueElement* ElemForEnqueue = (BPQueueElement*) malloc(
+				sizeof(BPQueueElement));
+
+	//Allocation failed
+	if (ElemForEnqueue == NULL) {
+		printf(MEM_PROBLEMS);
+		free(arrayOfAll);
+		spBPQueueDestroy(arrayOfAllQueue);
+		return -1;
+		}
+
 	//print 5 closest
-	qsort(arrayOfAll,HowManypic,sizeof(int),cmp);
 	printf(PRINT_BY_LOCAL);
 	for (int i = 0; i < min(HOWMANYCLOSE,HowManypic); i++){
 		if (i > 0)
 			printf(",");
-		printf("%d",arrayOfAll[i]);
+		spBPQueuePeek(arrayOfAllQueue, ElemForEnqueue);
+		spBPQueueDequeue(arrayOfAllQueue);
+		printf("%d", ElemForEnqueue->index);
 	}
 	printf("\n");
 
 	//free resources and return 1 because everything is OK
 	free(arrayOfAll);
+	spBPQueueDestroy(arrayOfAllQueue);
+	free(ElemForEnqueue);
+
 	return 1;
 
 
