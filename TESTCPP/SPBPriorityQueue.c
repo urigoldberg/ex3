@@ -96,16 +96,29 @@ SP_BPQUEUE_MSG spBPQueueEnqueue(SPBPQueue* source, int index, double value) {
 	}
 
 	//Array is neither empty nor full
+
 	if (spBPQueueSize(source) < spBPQueueGetMaxSize(source)){
 		for(int i = 0; i < source->size; i++) {
-			if (source->queue[(source->start+i)%(source->maxSize)].value >= value){
+			if (source->queue[(source->start+i)%(source->maxSize)].value > value){
 				int tempIndex = source->queue[(source->start+i)%(source->maxSize)].index;
 				double tempValue = source->queue[(source->start+i)%(source->maxSize)].value;
 				source->queue[(source->start+i)%(source->maxSize)].index = index;
 				source->queue[(source->start+i)%(source->maxSize)].value = value;
 				index = tempIndex;
 				value = tempValue;
+
+				//change for ex3 - if value equal - index is tie breaker
+				if (source->queue[(source->start+i)%(source->maxSize)].value == value)
+					if (source->queue[(source->start+i)%(source->maxSize)].index > index) {
+					int tempIndex = source->queue[(source->start+i)%(source->maxSize)].index;
+					double tempValue = source->queue[(source->start+i)%(source->maxSize)].value;
+					source->queue[(source->start+i)%(source->maxSize)].index = index;
+					source->queue[(source->start+i)%(source->maxSize)].value = value;
+					index = tempIndex;
+					value = tempValue;
+
 			}
+		}
 		}
 		source->queue[(source->start+source->size)%(source->maxSize)].index = index;
 		source->queue[(source->start+source->size)%(source->maxSize)].value = value;
@@ -115,13 +128,24 @@ SP_BPQUEUE_MSG spBPQueueEnqueue(SPBPQueue* source, int index, double value) {
 
 	//Array is full
 	for(int i = 0; i < source->size; i++) {
-		if (source->queue[i].value >= value){
+		if (source->queue[i].value > value){
 			int tempIndex = source->queue[(source->start+i)%(source->maxSize)].index;
 			double tempValue = source->queue[(source->start+i)%(source->maxSize)].value;
 			source->queue[(source->start+i)%(source->maxSize)].index = index;
 			source->queue[(source->start+i)%(source->maxSize)].value = value;
 			index = tempIndex;
 			value = tempValue;
+			}
+		//change for ex3 - if value equal - index is tie breaker
+		if (source->queue[(source->start+i)%(source->maxSize)].value == value)
+			if (source->queue[(source->start+i)%(source->maxSize)].index > index) {
+			int tempIndex = source->queue[(source->start+i)%(source->maxSize)].index;
+			double tempValue = source->queue[(source->start+i)%(source->maxSize)].value;
+			source->queue[(source->start+i)%(source->maxSize)].index = index;
+			source->queue[(source->start+i)%(source->maxSize)].value = value;
+			index = tempIndex;
+			value = tempValue;
+
 			}
 	}
 	return SP_BPQUEUE_FULL;
@@ -189,42 +213,5 @@ void printarry (SPBPQueue* spbqueue) {
 		printf ("index in array: %d index of element %d value of element %f \n",i,spbqueue->queue[(i+spbqueue->start)%spbqueue->maxSize].index,spbqueue->queue[(i+spbqueue->start)%(spbqueue->maxSize)].value);
 	}
 }
-/**
-int main(){
 
-	//maxvalue after copy is problematic
-
-	SPBPQueue* Queue4length = spBPQueueCreate(4);
-
-	spBPQueueEnqueue(Queue4length,5,1);
-	spBPQueueEnqueue(Queue4length,5,2);
-	spBPQueueEnqueue(Queue4length,2,10);
-	printarry (Queue4length);
-
-	spBPQueueEnqueue(Queue4length,3,2.1);
-	printarry (Queue4length);
-	spBPQueueEnqueue(Queue4length,7,2.5);
-	printarry (Queue4length);
-	spBPQueueEnqueue(Queue4length,100,20);
-	printarry (Queue4length);
-	spBPQueueDequeue(Queue4length);
-	spBPQueueDequeue(Queue4length);
-	printarry (Queue4length);
-	spBPQueueEnqueue(Queue4length,3,1);
-	spBPQueueEnqueue(Queue4length,3,1.4);
-	printarry (Queue4length);
-	SPBPQueue* CopyOfQueue4length = spBPQueueCopy(Queue4length);
-	spBPQueueDestroy(Queue4length);
-	printarry(CopyOfQueue4length);
-	printf("start is %d",Queue4length->start);
-	printf("min in copy is %f max is %f\n",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(CopyOfQueue4length));
-	printf("size of copy %d\n",CopyOfQueue4length->size);
-	printf("min is %f max is %f",spBPQueueMinValue(Queue4length),spBPQueueMaxValue(CopyOfQueue4length));
-
-
-	printf("%d",Queue4length->size);
-
-		return 0;
-}
-*/
 

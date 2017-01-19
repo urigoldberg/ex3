@@ -112,7 +112,7 @@ int main() {
 		int test1 = print_5_LocalFeatures( SIFTS_Query, SIFTS_DB,NumOfSiftExtracted, howManySiftsQuery,
 				 HowManypic);
 
-		//if test == -1, something went wrong...free all and run
+		//if test1 == -1, something went wrong...free all and run
 		if (test1 == -1){
 			terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,false);
 			FreeOneArrayOfPoints(RBG_query);
@@ -121,6 +121,8 @@ int main() {
 			}
 
 	}
+
+	//Query is '#'. free all and bye bye
 	terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,true);
 	return 0;
 

@@ -8,14 +8,15 @@
 #include "sp_image_proc_util.h"
 #include <stdio.h>
 #include <opencv2/highgui.hpp>
-#include <opencv2/xfeatures2d.hpp>
 #include <opencv2/imgproc.hpp>
-#include <opencv2/core.hpp>// Mat
-#include <opencv2/highgui.hpp>  //imshow
-#include <opencv2/imgcodecs.hpp>//imread
 #include <opencv2/features2d.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/core.hpp>
+#include <opencv2/imgcodecs.hpp>
+
 
 #define POINTSNUMBER 3
+#define THIRD 0.33
 
 extern "C" {
 #include "SPBPriorityQueue.h"
@@ -142,7 +143,7 @@ double spRGBHistL2Distance(SPPoint** rgbHistA, SPPoint** rgbHistB) {
 	second = spPointL2SquaredDistance(rgbHistA[1], rgbHistB[1]);
 	third = spPointL2SquaredDistance(rgbHistA[2], rgbHistB[2]);
 
-	return (0.33 * first + 0.33 * second + 0.33 * third);
+	return (THIRD * first + THIRD * second + THIRD * third);
 }
 
 SPPoint** spGetSiftDescriptors(const char* str, int imageIndex,
@@ -248,10 +249,10 @@ int* spBestSIFTL2SquaredDistance(int kClosest, SPPoint* queryFeature,
 		return NULL;
 	}
 	/**
-	 * ================VERY IMPORTANT================
-	 * FOR TIE BREAK - CHANGE QUEUE FOR CASES OF EVEN
+	 * ====================VERY IMPORTANT====================
+	 * FOR TIE BREAK - CHANGE QUEUE FOR CASES OF EQUAL VALUE
 	 * 				(In Enqueue)
-	 * ==============================================
+	 * ======================================================
 	 */
 	for (int i = 0; i < kClosest; i++) {
 		spBPQueuePeek(KCLSQueue, ElemForEnqueue);
