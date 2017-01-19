@@ -209,7 +209,7 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 	 */
 
 	for (int i = 0; i < HowManypic; i++) {
-		spBPQueueEnqueue(arrayOfAllQueue, (-1)*i, (double)arrayOfAll[i]);
+		spBPQueueEnqueue(arrayOfAllQueue, (-1)*i, (double)arrayOfAll[i]*(-1));
 		}
 
 	//Allocate BPQueueElement for peeking from queue
@@ -229,7 +229,7 @@ int print_5_LocalFeatures(SPPoint** SIFTS_Query, SPPoint*** SIFTS_DB,int* NumOfS
 	for (int i = 0; i < min(HOWMANYCLOSE,HowManypic); i++){
 		if (i > 0)
 			printf(",");
-		spBPQueuePeekLast(arrayOfAllQueue, ElemForEnqueue);
+		spBPQueuePeek(arrayOfAllQueue, ElemForEnqueue);
 		spBPQueueDequeue(arrayOfAllQueue);
 
 		printf("%d", (ElemForEnqueue->index)*(-1));
