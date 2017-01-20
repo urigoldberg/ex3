@@ -3,6 +3,25 @@
 #include <string.h>
 #include "main_aux.h"
 
+
+
+//concate string b at the end of string a
+void Sconcate (char s1[], char s2[]) {
+
+	  int i, j;
+
+	   i = strlen(s1);
+
+	   for (j = 0; s2[j] != '\0'; i++, j++) {
+		   if (s2[j] != '\n')
+	      s1[i] = s2[j];
+	   }
+
+	   s1[i] = '\0';
+
+}
+
+
 void FreeOneArrayOfPoints(SPPoint** array) {
 	int size = (int) (sizeof(array) / sizeof(SPPoint*));
 	for (int i = 0; i < size; i++)
@@ -28,6 +47,8 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 	 *  SIFTS_DB -> Data Base for SIFT
 	 */
 
+	printf("shit %s %d %d %s %s",dir,nBin,nSift,picName,sufName);
+
 	RGB_DB = (SPPoint***) malloc(sizeof(SPPoint**) * HowManypic);
 	if (RGB_DB == NULL) {
 		printf(MEM_PROBLEMS);
@@ -50,16 +71,20 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 		return;
 	}
 
+
 	//Inserts values to DB for each image
 	for (int i = 0; i < HowManypic; i++) {
 
 		//Concate path
-		char src[STRLENGTH];
-		char C = i + '0';
-		strcpy(src, dir);
-		strcat(src, picName);
-		strcat(src, &C);
-		strcat(src, sufName);
+		char C[2];
+		sprintf(C,"%d",i);
+		char src[STRLENGTH] = "";
+		Sconcate(src,dir);
+		Sconcate(src,picName);
+		Sconcate(src,C);
+		Sconcate(src,sufName);
+		printf("%s",src);
+
 
 		RGB_DB[i] = spGetRGBHist(src, i, nBin);
 
@@ -71,6 +96,7 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 			return;
 		}
 
+
 		SIFTS_DB[i] = spGetSiftDescriptors(src, i, nSift,
 				&NumOfSiftExtracted[i]);
 		//Allocation failed
@@ -81,6 +107,7 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 			free(NumOfSiftExtracted);
 			return;
 		}
+
 	}
 
 }
@@ -247,3 +274,6 @@ int min (int num1, int num2) {
 		return num1;
 	return num2;
 }
+
+
+

@@ -157,6 +157,7 @@ double spRGBHistL2Distance(SPPoint** rgbHistA, SPPoint** rgbHistB) {
 
 SPPoint** spGetSiftDescriptors(const char* str, int imageIndex,
 		int nFeaturesToExtract, int *nFeatures) {
+
 	//Validate input
 	if ((str == NULL) || (nFeatures == NULL) || (nFeaturesToExtract <= 0)) {
 		return NULL;
@@ -214,6 +215,7 @@ SPPoint** spGetSiftDescriptors(const char* str, int imageIndex,
 			free(arrPoint);
 		}
 	}
+	free(SIFTfeatures);
 	return arrPoint;
 }
 

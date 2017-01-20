@@ -10,15 +10,20 @@ int main() {
 	char dir[STRLENGTH];
 	fgets(dir, STRLENGTH, stdin);
 
+
 	//Ask for PREFIX
 	printf(PRE_REQUEST);
 	char picName[STRLENGTH];
 	fgets(picName, STRLENGTH, stdin);
 
+
 	//Ask for NUM OF PICTURES
 	printf(IMAGE_NUM_ERQUSET);
 	int HowManypic;
 	scanf("%d", &HowManypic);
+	getchar();
+
+
 
 	//Check if the user entered an integer that is less than 1
 	if (HowManypic < 1) {
@@ -31,14 +36,14 @@ int main() {
 	char sufName[STRLENGTH];
 	fgets(sufName, STRLENGTH, stdin);
 
-
 	//Ask for BINS
 	printf(BIN_ERQUSET);
 	int nBin;
 	scanf("%d",&nBin);
 
+
 	//Check if the user entered a number that is less than 1 or greater than 255
-	if ((nBin < 1)||(nBin > 255)) {
+	if (((nBin < 1)||(nBin > 255))&&(false)) {
 		printf(NUM_BIN_ERROR);
 		return 0;
 		}
@@ -53,11 +58,26 @@ int main() {
 		printf(NUM_SIFT_ERROR);
 		return 0;
 		}
+////////////////////////////////////////////////////////
+	char C[2];
+	sprintf(C,"%d",0);
+	char src[STRLENGTH] = "";
+	Sconcate(src,dir);
+	Sconcate(src,picName);
+	Sconcate(src,C);
+	Sconcate(src,sufName);
+	printf("%s",src);
+
+////////////////////////////////////////////////////////
+
+
 
 	//Create DBs
 	SPPoint*** RGB_DB = NULL;
 	SPPoint***  SIFTS_DB = NULL;
 	int* NumOfSiftExtracted = NULL;
+
+
 
 	//Initialize DBs and inserts values
 	createAllDB(NumOfSiftExtracted, RGB_DB, SIFTS_DB, dir,
@@ -67,7 +87,8 @@ int main() {
 	if (RGB_DB == NULL) {
 		return 0;
 	}
-
+}
+/**
 	//Ask for a query image
 	printf(Q_IMAGE_ERQUSET);
 	char Query[STRLENGTH];
@@ -126,5 +147,6 @@ int main() {
 	terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,true);
 	return 0;
 
-}
+}*/
+
 

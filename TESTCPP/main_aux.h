@@ -60,4 +60,7 @@ int cmp (const void* num1, const void* num2);
 
 int min (int num1, int num2);
 
+//concate string b at the end of string a
+void Sconcate (char* a, char* b);
+
 #endif /* MAIN_AUX_H_ */
