@@ -78,7 +78,10 @@ int main() {
 	int* NumOfSiftExtracted = NULL;
 
 
-
+	/**
+	 * you need to pass a pointer to RGB_DB and SIFTS_DB in order to get the results in here
+	 * and inside the function you need to address them as *RGB_DB etc..
+	 */
 	//Initialize DBs and inserts values
 	createAllDB(NumOfSiftExtracted, RGB_DB, SIFTS_DB, dir,
 			picName, HowManypic, sufName, nBin, nSift);
