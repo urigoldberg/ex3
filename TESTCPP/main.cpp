@@ -7,21 +7,23 @@ int main() {
 
 	//Ask for PATH
 	printf(DIR_REQUEST);
-	char dir[STRLENGTH];
-	fgets(dir, STRLENGTH, stdin);
+//	char dir[STRLENGTH];
+//	fgets(dir, STRLENGTH, stdin);
+	char dir[] = "/Users/dor/Downloads/SPAssignment3/images/";
 
 
 	//Ask for PREFIX
 	printf(PRE_REQUEST);
-	char picName[STRLENGTH];
-	fgets(picName, STRLENGTH, stdin);
-
+//	char picName[STRLENGTH];
+//	fgets(picName, STRLENGTH, stdin);
+	char picName[] = "img";
 
 	//Ask for NUM OF PICTURES
 	printf(IMAGE_NUM_ERQUSET);
 	int HowManypic;
-	scanf("%d", &HowManypic);
-	getchar();
+//	scanf("%d", &HowManypic);
+	HowManypic = 17;
+//	getchar();
 
 
 
@@ -33,14 +35,16 @@ int main() {
 
 	//Ask for SUFFIX
 	printf(SUF_REQUEST);
-	char sufName[STRLENGTH];
-	fgets(sufName, STRLENGTH, stdin);
+//	char sufName[STRLENGTH];
+//	fgets(sufName, STRLENGTH, stdin);
+	char sufName[] = ".png";
 
 	//Ask for BINS
 	printf(BIN_ERQUSET);
 	int nBin;
-	scanf("%d",&nBin);
-	getchar();
+//	scanf("%d",&nBin);
+	nBin = 3;
+//	getchar();
 
 	//Check if the user entered a number that is less than 1 or greater than 255
 	if (((nBin < 1)||(nBin > 255))&&(false)) {
@@ -51,8 +55,9 @@ int main() {
 	//Ask for SIFTS
 	printf(SIFT_REQUEST);
 	int nSift;
-	scanf("%d",&nSift);
-	getchar();
+//	scanf("%d",&nSift);
+	nSift = 15;
+//	getchar();
 
 	//Check if the user entered a number that is less than 1 or greater than 255
 	if (nSift < 1) {
@@ -81,9 +86,10 @@ int main() {
 
 	//Ask for a query image
 	printf(Q_IMAGE_ERQUSET);
-	char Query[STRLENGTH];
-	fgets(Query, STRLENGTH, stdin);
-	removeNewline(Query);
+//	char Query[STRLENGTH];
+//	fgets(Query, STRLENGTH, stdin);
+	char Query[] = "/Users/dor/Downloads/SPAssignment3/queryA.png";
+//	removeNewline(Query);
 
 	if (Query[0] == '#') {
 		terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,true);
@@ -94,15 +100,17 @@ int main() {
 	while (Query[0] != '#') {
 
 		//Calculate RBG HIST for query
-		SPPoint** RBG_query = spGetRGBHist(Query,-1,nBin);
+		printf("\nline97\n");
+		SPPoint** RBG_query = spGetRGBHist(Query,0,nBin);
 		if (RBG_query == NULL) {
 			terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,false);
 			return 0;
 		}
 
 		//Calculate SIFT for query
+		printf("\nline105\n");
 		int howManySiftsQuery;
-		SPPoint** SIFTS_Query = spGetSiftDescriptors(Query,-1,nSift,&howManySiftsQuery);
+		SPPoint** SIFTS_Query = spGetSiftDescriptors(Query,0,nSift,&howManySiftsQuery);
 			if (SIFTS_Query == NULL) {
 				terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,false);
 				FreeOneArrayOfPoints(RBG_query);
@@ -110,9 +118,11 @@ int main() {
 			}
 
 		//Print 5 closest
+			printf("\nline115\n");
 		int test = print_5_GlobalFeatures(RBG_query, RGB_DB, HowManypic);
 
 		//if test == -1, something went wrong...free all and run
+		printf("\nline119\n");
 		if (test == -1){
 			terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,false);
 			FreeOneArrayOfPoints(RBG_query);
@@ -121,6 +131,7 @@ int main() {
 		}
 
 		//Print 5 closest
+		printf("\nline128\n");
 		int test1 = print_5_LocalFeatures( SIFTS_Query, SIFTS_DB,NumOfSiftExtracted, howManySiftsQuery,
 				 HowManypic);
 

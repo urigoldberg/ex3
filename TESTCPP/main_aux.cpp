@@ -74,6 +74,7 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint**** RGB_DB,
 	}
 
 	//Inserts values to DB for each image
+	printf("__main_aux__ - howmanypic: %d", HowManypic);
 	for (int i = 0; i < HowManypic; i++) {
 
 		//Concate path
@@ -126,32 +127,39 @@ void terminate(SPPoint*** RGB_DB, SPPoint*** SIFTS_DB, int* NumOfSiftExtracted,
 //Return 1 if succed
 int print_5_GlobalFeatures(SPPoint** RBG_HIST, SPPoint*** RGB_DB,
 		int HowManypic) {
-
 	//Allocate Priority Queue
+	printf("\n**line131\n");
 	SPBPQueue* Closeset5 = spBPQueueCreate(HOWMANYCLOSE);
 	//Allocation failed
 	if (Closeset5 == NULL) {
+		printf("\n**line135\n");
 		printf(MEM_PROBLEMS);
 		return -1;
 	}
-
+	printf("\n*@*line139\n");
+	printf("\n** HowManypic: %d", HowManypic);
 	for (int i = 0; i < HowManypic; i++) {
+		printf("\n*** in loop");
 		double dis = spRGBHistL2Distance(RBG_HIST, RGB_DB[i]);
+		printf("\n*** dis: %d", dis);
 		spBPQueueEnqueue(Closeset5, i, dis);
 	}
 
 	//Allocate BPQueueElement for peeking from queue
+	printf("\n**line146\n");
 	BPQueueElement* ElemForEnqueue = (BPQueueElement*) malloc(
 			sizeof(BPQueueElement));
 
 	//Allocation failed
 	if (ElemForEnqueue == NULL) {
+		printf("\n**line152\n");
 		printf(MEM_PROBLEMS);
 		spBPQueueDestroy(Closeset5);
 		return -1;
 	}
 
 	//print 5 closest
+	printf("\n**line159\n");
 	printf(PRINT_BY_GLOBAL);
 	for (int i = 0; i < HOWMANYCLOSE; i++) {
 		if (spBPQueueIsEmpty(Closeset5)) {

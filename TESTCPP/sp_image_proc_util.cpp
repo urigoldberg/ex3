@@ -29,6 +29,7 @@ using namespace std;
 
 SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
+
 	//Validate input
 	if ((str == NULL) || (nBins <= 0)) {
 		return NULL;
@@ -57,12 +58,14 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 	SPPoint** arrPoint = (SPPoint**) malloc(POINTSNUMBER * sizeof(SPPoint*));
 	if (arrPoint == NULL) {
+		printf("\nline60\n");
 		printf(MEM_PEOBLEM);
 		return NULL;
 	}
 
 	double* red = (double*) malloc(nBins * sizeof(double));
 	if (red == NULL) {
+		printf("\nline67\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint);
 		return NULL;
@@ -70,6 +73,7 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 	double* blue = (double*) malloc(nBins * sizeof(double));
 	if (blue == NULL) {
+		printf("\nline75\n");
 		printf(MEM_PEOBLEM);
 		free(red);
 		free(arrPoint);
@@ -78,6 +82,7 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 	double* green = (double*) malloc(nBins * sizeof(double));
 	if (green == NULL) {
+		printf("\nline84\n");
 		printf(MEM_PEOBLEM);
 		free(red);
 		free(blue);
@@ -94,6 +99,7 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 	arrPoint[0] = spPointCreate(red, nBins, imageIndex);
 	//Allocation failed - Free resources
 	if (arrPoint[0] == NULL) {
+		printf("\nline101\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint);
 		free(red);
@@ -105,6 +111,7 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 	arrPoint[1] = spPointCreate(blue, nBins, imageIndex);
 	//Allocation failed - Free resources
 	if (arrPoint[1] == NULL) {
+		printf("\nline113\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint[0]);
 		free(arrPoint);
@@ -117,6 +124,7 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 	arrPoint[2] = spPointCreate(green, nBins, imageIndex);
 	//Allocation failed - Free resources
 	if (arrPoint[2] == NULL) {
+		printf("\nline126\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint[0]);
 		free(arrPoint[1]);
