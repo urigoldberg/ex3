@@ -21,6 +21,10 @@ void Sconcate (char s1[], char s2[]) {
 
 }
 
+void removeNewline (char s1[]) {
+	s1[strlen(s1)-1] = '\0';
+}
+
 
 void FreeOneArrayOfPoints(SPPoint** array) {
 	int size = (int) (sizeof(array) / sizeof(SPPoint*));
@@ -38,8 +42,8 @@ void FreeDB(SPPoint*** DB, int size) {
 	free(DB);
 }
 
-void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
-		SPPoint*** SIFTS_DB, char* dir, char* picName, int HowManypic,
+void createAllDB(int* NumOfSiftExtracted, SPPoint**** RGB_DB,
+		SPPoint**** SIFTS_DB, char* dir, char* picName, int HowManypic,
 		char* sufName, int nBin, int nSift) {
 
 	/** Allocate 2 Data-Bases
@@ -47,18 +51,16 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 	 *  SIFTS_DB -> Data Base for SIFT
 	 */
 
-	printf("shit %s %d %d %s %s",dir,nBin,nSift,picName,sufName);
-
-	RGB_DB = (SPPoint***) malloc(sizeof(SPPoint**) * HowManypic);
-	if (RGB_DB == NULL) {
+	*RGB_DB = (SPPoint***) malloc(sizeof(SPPoint**) * HowManypic);
+	if (*RGB_DB == NULL) {
 		printf(MEM_PROBLEMS);
 		return;
 	}
 
-	SIFTS_DB = (SPPoint***) malloc(sizeof(SPPoint**) * HowManypic);
-	if (SIFTS_DB == NULL) {
+	*SIFTS_DB = (SPPoint***) malloc(sizeof(SPPoint**) * HowManypic);
+	if (*SIFTS_DB == NULL) {
 		printf(MEM_PROBLEMS);
-		free(RGB_DB);
+		free(*RGB_DB);
 		return;
 	}
 
@@ -66,11 +68,10 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 	NumOfSiftExtracted = (int*) malloc(sizeof(int) * HowManypic);
 	if (NumOfSiftExtracted == NULL) {
 		printf(MEM_PROBLEMS);
-		free(SIFTS_DB);
-		free(RGB_DB);
+		free(*SIFTS_DB);
+		free(*RGB_DB);
 		return;
 	}
-
 
 	//Inserts values to DB for each image
 	for (int i = 0; i < HowManypic; i++) {
@@ -86,24 +87,24 @@ void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
 		printf("%s",src);
 
 
-		RGB_DB[i] = spGetRGBHist(src, i, nBin);
+		(*RGB_DB)[i] = spGetRGBHist(src, i, nBin);
 
 		//Allocation failed
 		if (RGB_DB[i] == NULL) {
-			FreeDB(RGB_DB, i);
-			FreeDB(SIFTS_DB, i);
+			FreeDB(*RGB_DB, i);
+			FreeDB(*SIFTS_DB, i);
 			free(NumOfSiftExtracted);
 			return;
 		}
 
 
-		SIFTS_DB[i] = spGetSiftDescriptors(src, i, nSift,
+		(*SIFTS_DB)[i] = spGetSiftDescriptors(src, i, nSift,
 				&NumOfSiftExtracted[i]);
 		//Allocation failed
 		if (SIFTS_DB[i] == NULL) {
 			//we have one more in RGB
-			FreeDB(RGB_DB, i + 1);
-			FreeDB(SIFTS_DB, i);
+			FreeDB(*RGB_DB, i + 1);
+			FreeDB(*SIFTS_DB, i);
 			free(NumOfSiftExtracted);
 			return;
 		}

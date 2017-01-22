@@ -40,7 +40,7 @@ int main() {
 	printf(BIN_ERQUSET);
 	int nBin;
 	scanf("%d",&nBin);
-
+	getchar();
 
 	//Check if the user entered a number that is less than 1 or greater than 255
 	if (((nBin < 1)||(nBin > 255))&&(false)) {
@@ -52,25 +52,13 @@ int main() {
 	printf(SIFT_REQUEST);
 	int nSift;
 	scanf("%d",&nSift);
+	getchar();
 
 	//Check if the user entered a number that is less than 1 or greater than 255
 	if (nSift < 1) {
 		printf(NUM_SIFT_ERROR);
 		return 0;
 		}
-////////////////////////////////////////////////////////
-	char C[2];
-	sprintf(C,"%d",0);
-	char src[STRLENGTH] = "";
-	Sconcate(src,dir);
-	Sconcate(src,picName);
-	Sconcate(src,C);
-	Sconcate(src,sufName);
-	printf("%s",src);
-
-////////////////////////////////////////////////////////
-
-
 
 	//Create DBs
 	SPPoint*** RGB_DB = NULL;
@@ -83,19 +71,19 @@ int main() {
 	 * and inside the function you need to address them as *RGB_DB etc..
 	 */
 	//Initialize DBs and inserts values
-	createAllDB(NumOfSiftExtracted, RGB_DB, SIFTS_DB, dir,
+	createAllDB(NumOfSiftExtracted, &RGB_DB, &SIFTS_DB, dir,
 			picName, HowManypic, sufName, nBin, nSift);
-
 	//Initialize DBs failed
 	if (RGB_DB == NULL) {
 		return 0;
 	}
-}
-/**
+
+
 	//Ask for a query image
 	printf(Q_IMAGE_ERQUSET);
 	char Query[STRLENGTH];
 	fgets(Query, STRLENGTH, stdin);
+	removeNewline(Query);
 
 	if (Query[0] == '#') {
 		terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,true);
@@ -150,6 +138,6 @@ int main() {
 	terminate(RGB_DB,SIFTS_DB,NumOfSiftExtracted,HowManypic,true);
 	return 0;
 
-}*/
+}
 
 

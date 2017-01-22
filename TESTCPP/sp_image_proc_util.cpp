@@ -207,7 +207,7 @@ SPPoint** spGetSiftDescriptors(const char* str, int imageIndex,
 		//Allocation for one point failed
 		if (arrPoint[i] == NULL) {
 			printf(MEM_PEOBLEM);
-			for (int t = 0; i < i; t++) {
+			for (int t = 0; t < i; t++) {
 				//free all points
 				spPointDestroy(arrPoint[i]);
 			}

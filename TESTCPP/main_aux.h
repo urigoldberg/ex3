@@ -42,8 +42,8 @@ extern "C" {
 void terminate(SPPoint*** RGB_DB, SPPoint*** SIFTS_DB, int* NumOfSiftExtracted,
 		int HowManypic, bool print);
 
-void createAllDB(int* NumOfSiftExtracted, SPPoint*** RGB_DB,
-		SPPoint*** SIFTS_DB, char* dir, char* picName, int HowManypic,
+void createAllDB(int* NumOfSiftExtracted, SPPoint**** RGB_DB,
+		SPPoint**** SIFTS_DB, char* dir, char* picName, int HowManypic,
 		char* sufName, int nBin, int nSift);
 
 void FreeDB(SPPoint*** DB, int size);
@@ -62,5 +62,9 @@ int min (int num1, int num2);
 
 //concate string b at the end of string a
 void Sconcate (char* a, char* b);
+
+//removes '\n' char from end of string a
+void removeNewline (char* a);
+
 
 #endif /* MAIN_AUX_H_ */
