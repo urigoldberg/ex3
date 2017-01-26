@@ -26,7 +26,6 @@ extern "C" {
 }
 using namespace cv;
 using namespace std;
-
 SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 
@@ -37,15 +36,15 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 	//Load image
 	//Return NULL if fails
-	Mat src;
-	src = imread(str, CV_LOAD_IMAGE_COLOR);
+	cv::Mat src;
+	src = cv::imread(str, CV_LOAD_IMAGE_COLOR);
 	if (src.empty()) {
 		printf(IMG_CANNT_BE_LOADED,str);
 		return NULL;
 	}
 
 	//Separate the image in 3 places (B,G and R)
-	vector<Mat> bgr_planes;
+	std::vector<Mat> bgr_planes;
 	split(src, bgr_planes);
 
 	float range[] = { 0, 256 };
@@ -58,14 +57,12 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 	SPPoint** arrPoint = (SPPoint**) malloc(POINTSNUMBER * sizeof(SPPoint*));
 	if (arrPoint == NULL) {
-		printf("\nline60\n");
 		printf(MEM_PEOBLEM);
 		return NULL;
 	}
 
 	double* red = (double*) malloc(nBins * sizeof(double));
 	if (red == NULL) {
-		printf("\nline67\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint);
 		return NULL;
@@ -73,7 +70,6 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 	double* blue = (double*) malloc(nBins * sizeof(double));
 	if (blue == NULL) {
-		printf("\nline75\n");
 		printf(MEM_PEOBLEM);
 		free(red);
 		free(arrPoint);
@@ -82,7 +78,6 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 
 	double* green = (double*) malloc(nBins * sizeof(double));
 	if (green == NULL) {
-		printf("\nline84\n");
 		printf(MEM_PEOBLEM);
 		free(red);
 		free(blue);
@@ -91,15 +86,14 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 	}
 
 	for (int i = 0; i < nBins; i++) {
-		red[i] = r_hist.at<double>(0, i);
-		blue[i] = b_hist.at<double>(0, i);
-		green[i] = g_hist.at<double>(0, i);
+		red[i] = r_hist.at<float>(0, i);
+		blue[i] = b_hist.at<float>(0, i);
+		green[i] = g_hist.at<float>(0, i);
 	}
 
 	arrPoint[0] = spPointCreate(red, nBins, imageIndex);
 	//Allocation failed - Free resources
 	if (arrPoint[0] == NULL) {
-		printf("\nline101\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint);
 		free(red);
@@ -111,7 +105,6 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 	arrPoint[1] = spPointCreate(blue, nBins, imageIndex);
 	//Allocation failed - Free resources
 	if (arrPoint[1] == NULL) {
-		printf("\nline113\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint[0]);
 		free(arrPoint);
@@ -124,7 +117,6 @@ SPPoint** spGetRGBHist(const char* str, int imageIndex, int nBins) {
 	arrPoint[2] = spPointCreate(green, nBins, imageIndex);
 	//Allocation failed - Free resources
 	if (arrPoint[2] == NULL) {
-		printf("\nline126\n");
 		printf(MEM_PEOBLEM);
 		free(arrPoint[0]);
 		free(arrPoint[1]);
@@ -209,7 +201,7 @@ SPPoint** spGetSiftDescriptors(const char* str, int imageIndex,
 	}
 	for (int i = 0; i < ds1.rows; i++) {
 		for (int j = 0; j < ds1.cols; j++) {
-			SIFTfeatures[j] = ds1.at<double>(i, j);
+			SIFTfeatures[j] = ds1.at<float>(i, j);
 		}
 		arrPoint[i] = spPointCreate(SIFTfeatures, ds1.cols, imageIndex);
 		//Allocation for one point failed

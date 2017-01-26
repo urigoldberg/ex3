@@ -42,7 +42,7 @@ extern "C" {
 void terminate(SPPoint*** RGB_DB, SPPoint*** SIFTS_DB, int* NumOfSiftExtracted,
 		int HowManypic, bool print);
 
-void createAllDB(int* NumOfSiftExtracted, SPPoint**** RGB_DB,
+int* createAllDB(int* NumOfSiftExtracted, SPPoint**** RGB_DB,
 		SPPoint**** SIFTS_DB, char* dir, char* picName, int HowManypic,
 		char* sufName, int nBin, int nSift);
 

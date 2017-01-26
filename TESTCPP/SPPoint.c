@@ -11,20 +11,16 @@ struct sp_point_t {
 };
 
 SPPoint* spPointCreate(double* data, int dim, int index) {
-	printf("\dim: %d, index: %d\n", dim, index);
 	if (data == NULL || dim < 1 || index < 0) {
-		printf("\nline15\n");
 		return NULL;
 	}
 	SPPoint* p = (SPPoint*) malloc(sizeof(SPPoint));
 	if (p == NULL) {
-		printf("\nline20\n");
 		return NULL;
 	}
 	p->data = (double*) malloc(sizeof(double) * dim);
 	if (p->data == NULL) {
 		free(p);
-		printf("\nline26\n");
 		return NULL;
 	}
 	for (int i = 0; i < dim; ++i) {
